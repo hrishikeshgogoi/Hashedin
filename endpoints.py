@@ -20,7 +20,18 @@ def add_step(workflow_str_id: str,step:StepCreate):
   return {"step_str_id": st.step_str_id,"status":"step_added"}
 
 @app.post("/workflows/{workflow_str_id}/dependencies")
-def add_dependency(workflow_str_id:str,dep:DependencyCreate):
-  db.SessionLocal()
-  wf=db.query(Workflow).filter_by(workflow_str_id=workflow_str_id).first()
-  if not wf
+def add_dependency(workflow_str_id: str, dep: DependencyCreate):
+    db = SessionLocal()
+    wf = db.query(Workflow).filter_by(workflow_str_id=workflow_str_id).first()
+    if not wf:
+        raise HTTPException(status_code=404, detail="Workflow not found")
+    
+    step = db.query(Step).filter_by(step_str_id=dep.step_str_id, workflow_id=wf.id).first()
+    prereq = db.query(Step).filter_by(step_str_id=dep.prerequisite_step_str_id, workflow_id=wf.id).first()
+    
+    if not step or not prereq:
+        raise HTTPException(status_code=400, detail="Steps not found")
+    
+    db.add(Dependency(workflow_id=wf.id, step_id=step.id, prerequisite_step_id=prereq.id))
+    db.commit()
+    return {"status": "dependency_added"}
