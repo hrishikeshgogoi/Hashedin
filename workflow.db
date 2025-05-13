@@ -1,0 +1,24 @@
+CREATE TABLE workflow (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  workflow_str_id TEXT UNIQUE NOT NULL,
+  name TEXT,
+  description TEXT
+);
+
+CREATE TABLE steps(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  step_str_id TEXT NOT NULL,
+  workflow_id INTEGER,
+  description TEXT,
+  FOREIGN KEY(workflow_id) REFERENCES workflows(id)
+);
+
+CREATE TABLE dependencies(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  workflow_id INTEGER,
+  step_id INTEGER,
+  prerequisite_step_id INTEGER,
+  FOREIGN KEY(workflow_id) REFERENCES workflows(id),
+  FOREIGN KEY(step_id) REFERENCES steps(id),
+  FOREIGN KEY(prerequisite_step_id) REFERENCES steps(id)
+);
