@@ -1,0 +1,5 @@
+POST /workflows/wf001/steps
+{ "step_str_id": "stepA", "description": "Download" }
+
+POST /workflows/wf001/steps
+{ "step_str_id": "stepB", "description": "Process" }
