@@ -1,0 +1,2 @@
+POST /workflows/wf001/dependencies
+{ "step_str_id": "stepB", "prerequisite_step_str_id": "stepA" }
