@@ -1,0 +1,2 @@
+POST /workflows
+{ "workflow_str_id": "wf001", "name": "Pipeline", "description": "My workflow" }
